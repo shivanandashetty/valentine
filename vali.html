@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+
+<style>
+
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    width: 340px;
+    position: relative;
+    animation: pop 1s ease;
+}
+
+@keyframes pop {
+    from {transform: scale(0);}
+    to {transform: scale(1);}
+}
+
+/* Buttons */
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    margin: 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+#yesBtn {
+    background: #ff2e63;
+    color: white;
+}
+
+#yesBtn:hover {
+    transform: scale(1.2);
+}
+
+#noBtn {
+    background: #ddd;
+    position: absolute;
+}
+
+/* Message */
+#message {
+    display: none;
+    font-size: 22px;
+    color: #ff2e63;
+    margin-top: 20px;
+}
+
+/* Hearts */
+.heart {
+    position: absolute;
+    font-size: 20px;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float {
+    0% {transform: translateY(100vh); opacity:1;}
+    100% {transform: translateY(-10vh); opacity:0;}
+}
+
+/* Confetti */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: red;
+    animation: fall 3s linear infinite;
+}
+
+@keyframes fall {
+    from {top:-10px;}
+    to {top:100vh;}
+}
+
+/* Share Button */
+#shareBtn {
+    display: none;
+    background: green;
+    color: white;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<div class="card" id="card">
+
+    <h2 id="typeText"></h2>
+    <h1>Will you be my Valentine? 💘</h1>
+
+    <button id="yesBtn" onclick="yesClicked()">YES 😍</button>
+    <button id="noBtn">NO 😜</button>
+
+    <div id="message">You made me the happiest person 💕🥰</div>
+
+    <button id="shareBtn" onclick="share()">Share on WhatsApp 📲</button>
+
+</div>
+
+<script>
+
+const noBtn = document.getElementById("noBtn");
+const card = document.getElementById("card");
+const message = document.getElementById("message");
+const music = document.getElementById("music");
+const shareBtn = document.getElementById("shareBtn");
+
+/* Typewriter Effect */
+const text = "Rohitha 💖";
+let i = 0;
+
+function typeEffect(){
+    if(i < text.length){
+        document.getElementById("typeText").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeEffect,150);
+    }
+}
+typeEffect();
+
+/* NO Button Escape */
+noBtn.addEventListener("mouseover",()=>{
+
+    const maxX = card.offsetWidth - noBtn.offsetWidth;
+    const maxY = card.offsetHeight - noBtn.offsetHeight;
+
+    noBtn.style.left = Math.random()*maxX+"px";
+    noBtn.style.top = Math.random()*maxY+"px";
+});
+
+/* YES Click */
+function yesClicked(){
+
+    music.play();
+
+    message.style.display="block";
+    document.getElementById("yesBtn").style.display="none";
+    noBtn.style.display="none";
+
+    shareBtn.style.display="inline-block";
+
+    hearts();
+    confetti();
+}
+
+/* Floating Hearts */
+function hearts(){
+
+    setInterval(()=>{
+
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="💖";
+
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=Math.random()*25+15+"px";
+
+        document.body.appendChild(h);
+
+        setTimeout(()=>h.remove(),5000);
+
+    },300);
+}
+
+/* Confetti */
+function confetti(){
+
+    for(let i=0;i<80;i++){
+
+        const c=document.createElement("div");
+        c.className="confetti";
+
+        c.style.left=Math.random()*100+"vw";
+        c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+        c.style.animationDuration=Math.random()*3+2+"s";
+
+        document.body.appendChild(c);
+
+        setTimeout(()=>c.remove(),5000);
+    }
+}
+
+/* WhatsApp Share */
+function share(){
+
+    const msg="Hey 💖 I said YES to you 😍 Happy Valentine 💕";
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+}
+
+</script>
+
+</body>
+</html>
